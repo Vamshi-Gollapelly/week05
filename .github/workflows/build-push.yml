@@ -16,16 +16,21 @@ jobs:
 
       - name: Build & Push images
         run: |
+          set -e
           ACR=${{ secrets.ACR_LOGIN_SERVER }}
 
-          docker build -t $ACR/customer-service:week05 -f backend/customer_service/Dockerfile .
-          docker push  $ACR/customer-service:week05
+          # customer
+          docker build -t $ACR/week05ex01cu:v1 -f backend/customer_service/Dockerfile backend/customer_service
+          docker push  $ACR/week05ex01cu:v1
 
-          docker build -t $ACR/order-service:week05 -f backend/order_service/Dockerfile .
-          docker push  $ACR/order-service:week05
+          # order
+          docker build -t $ACR/week05ex01or:v1 -f backend/order_service/Dockerfile backend/order_service
+          docker push  $ACR/week05ex01or:v1
 
-          docker build -t $ACR/product-service:week05 -f backend/product_service/Dockerfile .
-          docker push  $ACR/product-service:week05
+          # product
+          docker build -t $ACR/week05ex01pr:v1 -f backend/product_service/Dockerfile backend/product_service
+          docker push  $ACR/week05ex01pr:v1
 
-          docker build -t $ACR/frontend:week05 -f frontend/Dockerfile .
-          docker push  $ACR/frontend:week05
+          # frontend
+          docker build -t $ACR/week05ex01f:v1 -f frontend/Dockerfile frontend
+          docker push  $ACR/week05ex01f:v1
