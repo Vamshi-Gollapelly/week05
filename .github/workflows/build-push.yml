@@ -1,0 +1,31 @@
+﻿name: Build & Push to ACR
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build & Push images
+        run: |
+          ACR=${{ secrets.ACR_LOGIN_SERVER }}
+
+          docker build -t $ACR/customer-service:week05 -f backend/customer_service/Dockerfile .
+          docker push  $ACR/customer-service:week05
+
+          docker build -t $ACR/order-service:week05 -f backend/order_service/Dockerfile .
+          docker push  $ACR/order-service:week05
+
+          docker build -t $ACR/product-service:week05 -f backend/product_service/Dockerfile .
+          docker push  $ACR/product-service:week05
+
+          docker build -t $ACR/frontend:week05 -f frontend/Dockerfile .
+          docker push  $ACR/frontend:week05
