@@ -1,4 +1,4 @@
-﻿name: Build & Push to ACR
+name: Build & Push to ACR
 on: workflow_dispatch
 
 jobs:
@@ -18,19 +18,7 @@ jobs:
         run: |
           set -e
           ACR=${{ secrets.ACR_LOGIN_SERVER }}
-
-          # customer
-          docker build -t $ACR/week05ex01cu:v1 -f backend/customer_service/Dockerfile backend/customer_service
-          docker push  $ACR/week05ex01cu:v1
-
-          # order
-          docker build -t $ACR/week05ex01or:v1 -f backend/order_service/Dockerfile backend/order_service
-          docker push  $ACR/week05ex01or:v1
-
-          # product
-          docker build -t $ACR/week05ex01pr:v1 -f backend/product_service/Dockerfile backend/product_service
-          docker push  $ACR/week05ex01pr:v1
-
-          # frontend
-          docker build -t $ACR/week05ex01f:v1 -f frontend/Dockerfile frontend
-          docker push  $ACR/week05ex01f:v1
+          docker build -t $ACR/week05ex01cu:v1 -f backend/customer_service/Dockerfile backend/customer_service && docker push $ACR/week05ex01cu:v1
+          docker build -t $ACR/week05ex01or:v1 -f backend/order_service/Dockerfile    backend/order_service    && docker push $ACR/week05ex01or:v1
+          docker build -t $ACR/week05ex01pr:v1 -f backend/product_service/Dockerfile  backend/product_service  && docker push $ACR/week05ex01pr:v1
+          docker build -t $ACR/week05ex01f:v3  -f frontend/Dockerfile                 frontend                && docker push $ACR/week05ex01f:v3
